@@ -1,5 +1,11 @@
-import React from 'react';
+import React , {useState}from 'react';
 import { StyleSheet, View, ImageBackground, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
+
+const InitialState = {
+    login: "",
+     email:"",
+     password:"",
+}
 export default function RegistrationScreen(){
     return(<Viev><ImageBackground style={styles.image} source={require('./assets/images/photoBG.jpg')}>
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : ""}>
@@ -15,6 +21,7 @@ export default function RegistrationScreen(){
     </KeyboardAvoidingView>
   </ImageBackground></Viev>)
 }
+
 
 const styles = StyleSheet.create({
     // container: {
