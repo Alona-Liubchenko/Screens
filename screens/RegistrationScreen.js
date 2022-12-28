@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import * as Font from 'expo-font';
+import React, { useState, useEffect } from "react";
+import * as Font from "expo-font";
+import { AppLoading } from "expo";
 import {
   StyleSheet,
   View,
@@ -11,34 +12,71 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 
 const initialState = {
-  login: "",
-  email: "",
-  password: "",
+  login: " ",
+  email: " ",
+  password: " ",
 };
-export default function RegistrationScreen() {
+const loadApplication = async () => {
+  await Font.loadAsync({
+    "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+  });
+};
+const RegistrationScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [isReady, setIsReady] = useState(false);
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 20 * 2
+  );
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2;
+      console.log("width", width);
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state);
-    setState(initialState)
+    setState(initialState);
   };
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={loadApplication}
+        onFinish={() => setIsReady(true)}
+        onError={console.warm}
+      />
+    );
+  }
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <Viev>
         <ImageBackground
           style={styles.image}
-          source={require("./assets/images/photoBG.jpg")}
+          source={require("../assets/images/photoBG.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : ""}
           >
             <View
-              style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}
+              style={{
+                ...styles.form,
+                marginBottom: isShowKeyboard ? 32 : 78,
+                width: dimensions,
+              }}
             >
               <Viev style={styles.header}>
                 <Text style={styles.hederTitle}>Registration</Text>
@@ -92,7 +130,7 @@ export default function RegistrationScreen() {
       </Viev>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   // container: {
@@ -112,15 +150,15 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
+    alignItems: "center",
   },
   header: {},
   hederTitle: {
-    fontFamily: "Roboto",
-    fontStyle: normal,
+    fontFamily: "Roboto-Bold",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
-    textAlign: center,
+    textAlign: "center",
     letterSpacing: 0.01,
   },
   input: {
@@ -146,3 +184,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default RegistrationScreen;
