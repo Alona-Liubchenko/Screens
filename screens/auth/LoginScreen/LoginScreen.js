@@ -19,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
@@ -60,7 +60,6 @@ export default function RegistrationScreen() {
                 width: dimensions,
               }}
             >
-
               <View style={styles.heder}>
                 <Text style={styles.hederTitle}>Log in</Text>
               </View>
@@ -115,10 +114,9 @@ export default function RegistrationScreen() {
                   <Text style={styles.btnTitle}>Sign in</Text>
                 </TouchableOpacity>
                 <View style={styles.warning}>
-                  <Text style={styles.warningText}>
-                  Don't have an account?
-                  </Text>
+                  <Text style={styles.warningText}>Don't have an account?</Text>
                   <TouchableOpacity
+                    onPress={() => navigation.navigate("Registration")}
                     activeOpacity={0.7}
                     style={styles.warningBtn}
                   >
@@ -133,4 +131,3 @@ export default function RegistrationScreen() {
     </TouchableWithoutFeedback>
   );
 }
-
