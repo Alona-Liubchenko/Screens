@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { styles } from "./RegistrationScreenStyle";
+// // import AddIcon from "../assets/images/icons/add.png";
+// import { AntDesign } from "@expo/vector-icons";
 
 import {
-  StyleSheet,
+  Image,
   View,
   ImageBackground,
   Text,
@@ -15,6 +18,7 @@ import {
 } from "react-native";
 
 const initialState = {
+  login: "",
   email: "",
   password: "",
 };
@@ -48,7 +52,7 @@ export default function RegistrationScreen() {
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("../assets/images/photoBG.jpg")}
+          source={require("../../../assets/images/photoBG.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : ""}
@@ -56,14 +60,34 @@ export default function RegistrationScreen() {
             <View
               style={{
                 ...styles.form,
-                paddingBottom: isShowKeyboard ? 32 : 144,
+                paddingBottom: isShowKeyboard ? 32 : 78,
                 width: dimensions,
               }}
             >
-
-              <View style={styles.heder}>
-                <Text style={styles.hederTitle}>Log in</Text>
+              <View style={styles.avatarSceleton}>
+                <Image
+                  source={require("../../../assets/images/icons/add.png")}
+                  fadeDuration={0}
+                  style={{ ...styles.addIcon, width: 25, height: 25 }}
+                />
               </View>
+              <View style={styles.heder}>
+                <Text style={styles.hederTitle}>Registration</Text>
+              </View>
+
+              <TextInput
+                style={styles.input}
+                selectionColor={"#212121"}
+                placeholder={"Login"}
+                placeholderTextColor={"#BDBDBD"}
+                value={state.login}
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+                onChangeText={(value) => {
+                  setState((prevState) => ({ ...prevState, login: value }));
+                }}
+              />
               <TextInput
                 style={styles.input}
                 placeholder={"Email"}
@@ -112,17 +136,17 @@ export default function RegistrationScreen() {
                   activeOpacity={0.8}
                   onPress={keyboardHide}
                 >
-                  <Text style={styles.btnTitle}>Sign in</Text>
+                  <Text style={styles.btnTitle}>Sign up</Text>
                 </TouchableOpacity>
                 <View style={styles.warning}>
                   <Text style={styles.warningText}>
-                  Don't have an account?
+                    Already have an account?
                   </Text>
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.warningBtn}
                   >
-                    <Text style={styles.warningBtnTitle}>Sign up</Text>
+                    <Text style={styles.warningBtnTitle}>Sign in</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -134,93 +158,3 @@ export default function RegistrationScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "flex-end",
-    alignItems: 'center',
-  },
-  form: {
-    paddingTop: 32,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-  },
-  heder: {
-    marginBottom: 32,
-  },
-  hederTitle: {
-    fontFamily: "Roboto-Medium",
-    fontSize: 30,
-    lineHeight: 35,
-    textAlign: "center",
-    letterSpacing: 0.01,
-  },
-  input: {
-    fontSize: 16,
-    fontFamily: "Roboto-Regular",
-    lineHeight: 19,
-    textAlign: "left",
-    backgroundColor: "#F6F6F6",
-    borderColor: "#E8E8E8",
-    borderRadius: 8,
-    height: 50,
-    marginBottom: 16,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    paddingLeft: 16,
-  },
-  wrapPassword: {
-    position: "relative",
-    marginBottom: 27,
-  },
-  inputPasswordText: {
-    position: "absolute",
-    right: 32,
-    top: 15,
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    lineHeight: 19,
-    color: "#1B4371",
-  },
-  btn: {
-    backgroundColor: "#FF6C00",
-    height: 51,
-    borderRadius: 100,
-    marginHorizontal: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  btnTitle: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    lineHeight: 19,
-    color: "#FFFFFF",
-  },
-  warning: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 16,
-  },
-  warningText: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    lineHeight: 19,
-    color: "#1B4371",
-    marginRight: 4,
-  },
-  warningBtn: {},
-  warningBtnTitle: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    lineHeight: 19,
-    color: "#1B4371",
-  },
-});

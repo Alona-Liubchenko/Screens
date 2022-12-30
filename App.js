@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
-
-
 import {View, StyleSheet} from "react-native";
-import RegistrationScreen from "./screens/RegistrationScreen";
-import LoginScreen from "./screens/LoginScreen";
+import RegistrationScreen from "./screens/auth/RegistrationScreen/RegistrationScreen";
+import LoginScreen from "./screens/auth/LoginScreen/LoginScreen";
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   useEffect(() => {
@@ -38,8 +36,8 @@ export default function App() {
 
   return (
     <View style={styles.screen} onLayout={onLayoutRootView}>
-      <LoginScreen/>
-      {/* <RegistrationScreen /> */}
+      {/* <LoginScreen/> */}
+      <RegistrationScreen />
     
     </View>
   );
