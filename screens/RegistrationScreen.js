@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import * as Font from "expo-font";
-import { AppLoading } from "expo";
+import AddIcon from "../assets/images/icons/add.png";
+import { AntDesign } from "@expo/vector-icons";
+
 import {
+  Image,
   StyleSheet,
   View,
   ImageBackground,
@@ -16,54 +18,38 @@ import {
 } from "react-native";
 
 const initialState = {
-  login: " ",
-  email: " ",
-  password: " ",
+  login: "",
+  email: "",
+  password: "",
 };
-const loadApplication = async () => {
-  await Font.loadAsync({
-    "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
-  });
-};
-const RegistrationScreen = () => {
+
+export default function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  const [isReady, setIsReady] = useState(false);
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 20 * 2
-  );
+  const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2;
-      console.log("width", width);
+      const width = Dimensions.get("window").width;
       setDimensions(width);
     };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    const dimensionsHandler = Dimensions.addEventListener("change", onChange);
+    return () => dimensionsHandler.remove();
   }, []);
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state);
     setState(initialState);
   };
-
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={loadApplication}
-        onFinish={() => setIsReady(true)}
-        onError={console.warm}
-      />
-    );
-  }
-
+  const handleTogglePassword = () => {
+    setShowPassword((showPassword) => !showPassword);
+  };
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <Viev>
+      <View style={styles.container}>
         <ImageBackground
           style={styles.image}
           source={require("../assets/images/photoBG.jpg")}
@@ -74,115 +60,207 @@ const RegistrationScreen = () => {
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? 32 : 78,
+                paddingBottom: isShowKeyboard ? 32 : 78,
                 width: dimensions,
               }}
             >
-              <Viev style={styles.header}>
+              <View style={styles.avatarSceleton}>
+                <Image
+                  source={require("../assets/images/icons/add.png")}
+                  fadeDuration={0}
+                  style={{ ...styles.addIcon, width: 25, height: 25 }}
+                />
+              </View>
+              <View style={styles.heder}>
                 <Text style={styles.hederTitle}>Registration</Text>
-              </Viev>
+              </View>
+
               <TextInput
                 style={styles.input}
-                placeholder="Login"
+                selectionColor={"#212121"}
+                placeholder={"Login"}
+                placeholderTextColor={"#BDBDBD"}
                 value={state.login}
                 onFocus={() => {
                   setIsShowKeyboard(true);
                 }}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, login: value }))
-                }
+                onChangeText={(value) => {
+                  setState((prevState) => ({ ...prevState, login: value }));
+                }}
               />
               <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder={"Email"}
+                placeholderTextColor={"#BDBDBD"}
                 value={state.email}
                 onFocus={() => {
                   setIsShowKeyboard(true);
                 }}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, email: value }))
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={state.password}
-                secureTextEntry={true}
-                onFocus={() => {
-                  setIsShowKeyboard(true);
+                onChangeText={(value) => {
+                  setState((prevState) => ({ ...prevState, email: value }));
                 }}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, password: value }))
-                }
               />
-              <View>
+              <View
+                style={
+                  isShowKeyboard
+                    ? [styles.wrapPassword, { marginBottom: 0 }]
+                    : styles.wrapPassword
+                }
+              >
+                <TextInput
+                  style={styles.input}
+                  placeholder={"Password"}
+                  placeholderTextColor={"#BDBDBD"}
+                  secureTextEntry={!showPassword ? true : false}
+                  value={state.password}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                  }}
+                  onChangeText={(value) => {
+                    setState((prevState) => ({
+                      ...prevState,
+                      password: value,
+                    }));
+                  }}
+                />
+                <Text
+                  style={styles.inputPasswordText}
+                  onPress={handleTogglePassword}
+                >
+                  {!showPassword ? "Show" : "Hide"}
+                </Text>
+              </View>
+              <View style={{ display: isShowKeyboard ? "none" : "flex" }}>
                 <TouchableOpacity
-                  activeOpacity={0.8}
                   style={styles.btn}
+                  activeOpacity={0.8}
                   onPress={keyboardHide}
                 >
-                  <Text style={styles.btnTitle}>SING UP</Text>
+                  <Text style={styles.btnTitle}>Sign up</Text>
                 </TouchableOpacity>
+                <View style={styles.warning}>
+                  <Text style={styles.warningText}>
+                    Already have an account?
+                  </Text>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.warningBtn}
+                  >
+                    <Text style={styles.warningBtnTitle}>Sign in</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
-      </Viev>
+      </View>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  //   // alignItems: 'center',
-  //   // justifyContent: 'center',
-  // },
-  form: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 25,
-    // width: 375,
-    height: 549,
-    marginBottom: 32,
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
   },
+
   image: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: 'center',
   },
-  header: {},
+  form: {
+    paddingTop: 92,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+  heder: {
+    marginBottom: 32,
+  },
   hederTitle: {
-    fontFamily: "Roboto-Bold",
-    fontWeight: 500,
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
     letterSpacing: 0.01,
   },
   input: {
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
+    lineHeight: 19,
     textAlign: "left",
     backgroundColor: "#F6F6F6",
     borderColor: "#E8E8E8",
     borderRadius: 8,
-    height: 40,
-    margin: 12,
+    height: 50,
+    marginBottom: 16,
+    marginHorizontal: 16,
     borderWidth: 1,
     paddingLeft: 16,
+  },
+  wrapPassword: {
+    position: "relative",
+    marginBottom: 27,
+  },
+  inputPasswordText: {
+    position: "absolute",
+    right: 32,
+    top: 15,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
   },
   btn: {
     backgroundColor: "#FF6C00",
     height: 51,
     borderRadius: 100,
-    marginTop: 43,
+    marginHorizontal: 16,
     justifyContent: "center",
     alignItems: "center",
   },
   btnTitle: {
-    color: "#FFFFFF",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
+    lineHeight: 19,
+    color: "#FFFFFF",
+  },
+  warning: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 16,
+  },
+  warningText: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
+    marginRight: 4,
+  },
+  warningBtn: {},
+  warningBtnTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
+  },
+  avatarSceleton: {
+    position: "absolute",
+    top: -60,
+    left: "50%",
+    marginLeft: -60,
+
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    backgroundColor: "#F6F6F6",
+  },
+  addIcon: {
+    position: "absolute",
+    bottom: 14,
+    right: -13,
   },
 });
-
-export default RegistrationScreen;

@@ -1,74 +1,54 @@
-// import { StatusBar } from 'expo-status-bar';
-import React, {useState} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
-const loadApplication = async () => {
-  await Font.loadAsync({
-    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
-  });
-};
-// import {
-//   StyleSheet,
-//   View,
-//   ImageBackground,
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   KeyboardAvoidingView,
-//   Platform,
-// } from "react-native";
-import  {RegistrationScreen}  from "./screens/RegistrationScreen";
+import * as SplashScreen from 'expo-splash-screen';
+
+
+import {View, StyleSheet} from "react-native";
+import RegistrationScreen from "./screens/RegistrationScreen";
+import LoginScreen from "./screens/LoginScreen";
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
-   if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={loadApplication}
-        onFinish={() => setIsReady(true)}
-        onError={console.warm}
-      />
-    );
+  const [appIsReady, setAppIsReady] = useState(false);
+  useEffect(() => {
+    async function prepare() {
+      try {
+
+        await Font.loadAsync({
+          "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+          "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+          "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
-  return (<RegistrationScreen />);
+
+  return (
+    <View style={styles.screen} onLayout={onLayoutRootView}>
+      <LoginScreen/>
+      {/* <RegistrationScreen /> */}
+    
+    </View>
+  );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     // alignItems: 'center',
-//     // justifyContent: 'center',
-//   },
-//   //   forma: {
-//   //     backgroundColor: '#FFFFFF',
-//   //     borderRadius: 25,
-//   //     // width: 375,
-//   //     height:549,
-//   // },
-//   //   image: {
-//   //     flex: 1,
-//   //     resizeMode: "cover",
-//   //     justifyContent: "flex-end",
-//   //   },
-//   //   input: {
-//   //     textAlign: 'left',
-//   //     backgroundColor: "#F6F6F6",
-//   //     borderColor: "#E8E8E8",
-//   //     borderRadius: 8,
-//   //      height: 40,
-//   //     margin: 12,
-//   //     borderWidth: 1,
-//   //     paddingLeft: 16,
-//   //   },
-//   //   btn: {
-//   //     backgroundColor: "#FF6C00",
-//   //     height:51,
-//   //     borderRadius:100,
-//   //     marginTop:43,
-//   //     justifyContent:"center",
-//   //     alignItems:"center",
-//   //   },
-//   //   btnTitle:{
-//   //     color: "#FFFFFF",
-//   //     fontSize:16,}
-// });
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+
+});
+
