@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "./RegistrationScreenStyle";
-// // import AddIcon from "../assets/images/icons/add.png";
-// import { AntDesign } from "@expo/vector-icons";
 
 import {
   Image,
@@ -47,6 +45,7 @@ export default function RegistrationScreen({ navigation }) {
   const handleTogglePassword = () => {
     setShowPassword((showPassword) => !showPassword);
   };
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
@@ -134,7 +133,11 @@ export default function RegistrationScreen({ navigation }) {
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  onPress={keyboardHide}
+                  onPress={() =>
+                    navigation.navigate("Home", {
+                      screen: "PostsScreen",
+                    })
+                  }
                 >
                   <Text style={styles.btnTitle}>Sign up</Text>
                 </TouchableOpacity>

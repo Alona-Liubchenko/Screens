@@ -1,57 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { View, StyleSheet } from "react-native";
-import RegistrationScreen from "./screens/auth/RegistrationScreen/RegistrationScreen";
-import LoginScreen from "./screens/auth/LoginScreen/LoginScreen";
-import PostsScreen from "./screens/main/PostsScreen";
-import CreatePostsScreen from "./screens/main/CreatePostsScreen";
-import ProfileScreen from "./screens/main/ProfileScreen";
-
-const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
-const useRout = (isAuth) => {
-  if(!isAuth){return(
- <AuthStack.Navigator>
-          <AuthStack.Screen
-            options={{ headerShown: false }}
-            name="Registration"
-            component={RegistrationScreen}
-          />
-          <AuthStack.Screen
-            options={{ headerShown: false }}
-            name="Login"
-            component={LoginScreen}
-          />
-    </AuthStack.Navigator>)
-  }
-  return ( <MainTab.Navigator>
-          <MainTab.Screen
-            options={{ headerShown: false }}
-            name="Posts"
-            component={PostsScreen}
-          />
-          <MainTab.Screen
-            options={{ headerShown: false }}
-            name="Create"
-            component={CreatePostsScreen}
-          />
-          <MainTab.Screen
-            options={{ headerShown: false }}
-            name="Profile"
-            component={ProfileScreen}
-          />
-        </MainTab.Navigator>)
-}
+import { useRout } from "./router";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+    const [isAuth, setisAuth] = useState({});
 
-  const routing = useRout({})
+  const routing = useRout(isAuth);
   useEffect(() => {
     async function prepare() {
       try {
@@ -82,7 +41,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.screen} onLayout={onLayoutRootView}>
-       {routing}
+        {routing}
       </View>
     </NavigationContainer>
   );
@@ -93,5 +52,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-

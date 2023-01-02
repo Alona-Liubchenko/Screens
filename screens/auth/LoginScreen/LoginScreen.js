@@ -36,13 +36,16 @@ export default function LoginScreen({ navigation }) {
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
-    Keyboard.dismiss();
+    navigation.navigate("Home", {
+      screen: "PostsScreen",
+    });
     console.log(state);
     setState(initialState);
   };
   const handleTogglePassword = () => {
     setShowPassword((showPassword) => !showPassword);
   };
+  
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
@@ -109,7 +112,11 @@ export default function LoginScreen({ navigation }) {
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  onPress={keyboardHide}
+                  onPress={() =>
+                    navigation.navigate("Home", {
+                      screen: "PostsScreen",
+                    })
+                  }
                 >
                   <Text style={styles.btnTitle}>Sign in</Text>
                 </TouchableOpacity>
