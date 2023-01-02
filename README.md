@@ -1,7 +1,11 @@
-Login_1: https://ibb.co/kqzQ3Sx
 
-Login_2: https://ibb.co/ssP1Vz5
 
-Registration_1: https://ibb.co/Jv0QZxh
+Registration: https://ibb.co/SJk6cSZ
 
-Registration_2:https://ibb.co/ncNKDwQ
+Login: https://ibb.co/SPBXtG9
+
+Posts:  https://ibb.co/HPb5HpR
+
+CreatePosts: https://ibb.co/jLTT8jX
+
+Profile: https://ibb.co/vch2VB3
