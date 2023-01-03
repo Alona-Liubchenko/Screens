@@ -4,12 +4,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import RegistrationScreen from "./screens/auth/RegistrationScreen/RegistrationScreen";
 import LoginScreen from "./screens/auth/LoginScreen/LoginScreen";
-import PostsScreen from "./screens/main/PostsScreen/PostsScreen";
+// import PostsScreen from "./screens/main/PostsScreen/PostsScreen";
 import CreatePostsScreen from "./screens/main/CreatePostsScreen/CreatePostsScreen";
 import ProfileScreen from "./screens/main/ProfileScreen/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import Home from "./screens/nestedScreen/Home/Home";
 
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -73,8 +74,8 @@ export const useRout = (isAuth) => {
             </View>
           ),
         }}
-        name="Posts"
-        component={PostsScreen}
+        name="Home"
+        component={Home}
       />
       <MainTab.Screen
         options={{
