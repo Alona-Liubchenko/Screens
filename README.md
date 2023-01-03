@@ -1,11 +1,10 @@
 
 
-Registration: https://ibb.co/SJk6cSZ
 
-Login: https://ibb.co/SPBXtG9
+Posts:  https://monosnap.com/file/qIK4QmM0pJ03sN85F457OFbCO5geJy
 
-Posts:  https://ibb.co/HPb5HpR
+CreatePosts: https://monosnap.com/file/oHJFas6ugeiaRpsbjMzyENPQsQ62os
 
-CreatePosts: https://ibb.co/jLTT8jX
+Map: https://monosnap.com/file/XcKT7ctAlP7MbKqcY0yrEJUfFFdTDR
 
-Profile: https://ibb.co/vch2VB3
+Comments: https://monosnap.com/file/oHJFas6ugeiaRpsbjMzyENPQsQ62os
