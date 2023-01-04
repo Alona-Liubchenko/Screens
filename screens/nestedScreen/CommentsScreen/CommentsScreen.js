@@ -73,14 +73,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   commentContainer: {
-
-    backgroundColor:"#F6F6F6",
+    backgroundColor: "#F6F6F6",
 
     marginHorizontal: 10,
     padding: 10,
     marginBottom: 10,
   },
- 
+
   input: {
     fontSize: 16,
     fontFamily: "Roboto-Regular",
