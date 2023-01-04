@@ -1,5 +1,6 @@
 import React from "react";
-import { View } from "react-native";
+import {useDispatch} from "react-redux"
+import { View, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import RegistrationScreen from "./screens/auth/RegistrationScreen/RegistrationScreen";
@@ -11,11 +12,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import Home from "./screens/nestedScreen/Home/Home";
+import db from "./firebase/config";
+import { authSignOutUser } from "./redux/auth/authOperations";
 
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
 export const useRout = (isAuth) => {
+
+  const dispatch = useDispatch()
+  const signOut = () => {
+    dispatch(authSignOutUser())
+  }
   if (!isAuth) {
     return (
       <AuthStack.Navigator>
@@ -52,12 +60,15 @@ export const useRout = (isAuth) => {
             lineHeight: 22,
           },
           headerRight: () => (
-            <MaterialIcons
+            <TouchableOpacity onPress={signOut}>
+              <MaterialIcons
               name="logout"
               size={24}
               color="#BDBDBD"
               style={{ marginRight: 10 }}
             />
+            </TouchableOpacity>
+            
           ),
           tabBarIcon: ({ focused, size, color }) => (
             <View
@@ -107,6 +118,7 @@ export const useRout = (isAuth) => {
       />
       <MainTab.Screen
         options={{
+          headerShown: false ,
           title: "Profile",
           headerTitleAlign: "center",
           headerTintColor: "#212121",

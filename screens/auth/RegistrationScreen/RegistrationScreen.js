@@ -14,6 +14,8 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from "react-native";
+import {useDispatch} from "react-redux"
+import { authSignUpUser } from "../../../redux/auth/authOperations";
 
 const initialState = {
   login: "",
@@ -26,6 +28,8 @@ export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
   const [showPassword, setShowPassword] = useState(false);
+ 
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const onChange = () => {
@@ -36,11 +40,16 @@ export default function RegistrationScreen({ navigation }) {
     return () => dimensionsHandler.remove();
   }, []);
 
-  const keyboardHide = () => {
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
-    Keyboard.dismiss();
+    
     console.log(state);
+    dispatch(authSignUpUser(state))
     setState(initialState);
+  };
+   const keyboardHide = () => {
+    setIsShowKeyboard(false);
+  Keyboard.dismiss()
   };
   const handleTogglePassword = () => {
     setShowPassword((showPassword) => !showPassword);
@@ -129,14 +138,17 @@ export default function RegistrationScreen({ navigation }) {
                   {!showPassword ? "Show" : "Hide"}
                 </Text>
               </View>
-              <View style={{ display: isShowKeyboard ? "none" : "flex" }}>
+              <View>
+                {/* style={{ display: isShowKeyboard ? "none" : "flex" }}> */}
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  onPress={() =>
-                    navigation.navigate("Home", {
-                      screen: "PostsScreen",
-                    })
+                  onPress={
+                    // () =>
+                    // navigation.navigate("Home", {
+                    //   screen: "PostsScreen",
+                    // })
+                    handleSubmit
                   }
                 >
                   <Text style={styles.btnTitle}>Sign up</Text>

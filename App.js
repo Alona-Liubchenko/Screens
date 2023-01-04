@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { Provider } from "react-redux";
 import { View, StyleSheet } from "react-native";
-import { useRout } from "./router";
+
+import { store } from "./redux/store";
+import Main from "./components/Main";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-    const [isAuth, setisAuth] = useState({});
 
-  const routing = useRout(isAuth);
   useEffect(() => {
     async function prepare() {
       try {
@@ -39,11 +39,11 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
+    <Provider store={store}>
       <View style={styles.screen} onLayout={onLayoutRootView}>
-        {routing}
+        <Main />
       </View>
-    </NavigationContainer>
+    </Provider>
   );
 }
 

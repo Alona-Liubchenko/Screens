@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import db from "../../../firebase/config";
 import { Text, View, Image, FlatList, TouchableOpacity } from "react-native";
 import { styles } from "./PostsScreenStyle";
 import { Fontisto } from "@expo/vector-icons";
@@ -6,11 +8,27 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 
 const PostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+  const { login } = useSelector((state) => state.auth);
+  console.log(login);
+  const getAllPost = async () => {
+    await db
+      .firestore()
+      .collection("posts")
+      .onSnapshot((data) =>
+        setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      );
+  };
+  useEffect(
+    () => {
+      getAllPost();
+      // if (route.params) {
+      //   setPosts((prevState) => [...prevState, route.params]);
+      // }
+    },
+    [
+      // route.params
+    ]
+  );
   console.log(posts);
   return (
     <View style={styles.container}>
@@ -21,8 +39,8 @@ const PostsScreen = ({ route, navigation }) => {
         />
 
         <View style={styles.boxUserInfo}>
-          <Text style={styles.userName}>Natali Romanova</Text>
-          <Text style={styles.userMail}>email@example.com</Text>
+          <Text style={styles.userName}>{login}</Text>
+          <Text style={styles.userMail}>{}</Text>
         </View>
       </View>
       <FlatList
@@ -32,17 +50,31 @@ const PostsScreen = ({ route, navigation }) => {
           <View style={styles.postsBox}>
             <Image sourse={{ uri: item.photo }} style={styles.postsImage} />
             <View>
-              <Text >Text</Text>
+              <Text>{item.comment}</Text>
             </View>
             <View style={styles.infoBox}>
-            <TouchableOpacity onPress={() => navigation.navigate("Comments")}>
-              <Fontisto name="comment" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Map")}>
-              
-              <Text> <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />Location</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Comments", { postId: item.id })
+                }
+              >
+                <Fontisto name="comment" size={24} color="#BDBDBD" />
               </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Map", { location: item.location })
+                }
+              >
+                <Text>
+                  <SimpleLineIcons
+                    name="location-pin"
+                    size={24}
+                    color="#BDBDBD"
+                  />
+                  location
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       />

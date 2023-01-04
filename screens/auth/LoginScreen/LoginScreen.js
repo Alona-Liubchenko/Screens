@@ -13,6 +13,9 @@ import {
   Dimensions,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../../../redux/auth/authOperations";
+
 import { styles } from "./LoginScreenStyle";
 const initialState = {
   email: "",
@@ -24,7 +27,7 @@ export default function LoginScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
   const [showPassword, setShowPassword] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width;
@@ -34,18 +37,24 @@ export default function LoginScreen({ navigation }) {
     return () => dimensionsHandler.remove();
   }, []);
 
-  const keyboardHide = () => {
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
-    navigation.navigate("Home", {
-      screen: "PostsScreen",
-    });
+    dispatch(authSignInUser(state));
+    Keyboard.dismiss();
+    // navigation.navigate("Home", {
+    //   screen: "PostsScreen",
+    // });
     console.log(state);
     setState(initialState);
+  };
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
   };
   const handleTogglePassword = () => {
     setShowPassword((showPassword) => !showPassword);
   };
-  
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
@@ -78,13 +87,13 @@ export default function LoginScreen({ navigation }) {
                   setState((prevState) => ({ ...prevState, email: value }));
                 }}
               />
-              <View
-                style={
+              <View>
+                {/* style={
                   isShowKeyboard
                     ? [styles.wrapPassword, { marginBottom: 0 }]
                     : styles.wrapPassword
                 }
-              >
+              > */}
                 <TextInput
                   style={styles.input}
                   placeholder={"Password"}
@@ -108,14 +117,17 @@ export default function LoginScreen({ navigation }) {
                   {!showPassword ? "Show" : "Hide"}
                 </Text>
               </View>
-              <View style={{ display: isShowKeyboard ? "none" : "flex" }}>
+              <View>
+                {/* style={{ display: isShowKeyboard ? "none" : "flex" }}> */}
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  onPress={() =>
-                    navigation.navigate("Home", {
-                      screen: "PostsScreen",
-                    })
+                  onPress={
+                    // () =>
+                    // navigation.navigate("Home", {
+                    //   screen: "PostsScreen",
+                    // })
+                    handleSubmit
                   }
                 >
                   <Text style={styles.btnTitle}>Sign in</Text>
