@@ -25,7 +25,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await Location.requestBackgroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
@@ -34,9 +34,10 @@ const CreatePostsScreen = ({ navigation }) => {
       setLocation(locationRes);
     })();
   }, []);
+
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-
+    console.log("camera", camera)
     setPhoto(photo.uri);
   };
 
@@ -47,7 +48,7 @@ const CreatePostsScreen = ({ navigation }) => {
   };
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
-    console.log( userId, comment, login)
+    // console.log( userId, comment, login)
     const createPost = await db
       .firestore()
       .collection("posts")
